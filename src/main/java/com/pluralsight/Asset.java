@@ -11,35 +11,33 @@ public class Asset {
         this.originalCost = originalCost;
     }
 
-    public Asset() {
-
-    }
-
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getDateAcquired() {
         return dateAcquired;
     }
 
-    public void setDateAcquired(String dateAcquired) {
-        this.dateAcquired = dateAcquired;
-    }
-
     public double getOriginalCost() {
         return originalCost;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setDateAcquired(String dateAcquired) {
+        this.dateAcquired = dateAcquired;
     }
 
     public void setOriginalCost(double originalCost) {
         this.originalCost = originalCost;
     }
 
-    public double getValue(){
-        return this.originalCost;
+    // Default value for a generic asset
+    public double getValue() {
+        return originalCost;
     }
 }
+

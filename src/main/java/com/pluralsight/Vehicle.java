@@ -1,77 +1,67 @@
 package com.pluralsight;
 
-public class Vehicle extends Asset{
-    private String address;
-    private int condition; // (1 -excellent, 2 -good, 3 -fair, 4 -poor)
-    private int squareFoot;
-    private int lotSize;
+import java.time.Year;
 
-    public House(String description, String dateAcquired, double originalCost,
-                 String address, int condition, int squareFoot, int lotSize) {
+public class Vehicle extends Asset {
+    private String makeModel;
+    private int year;
+    private int odometer;
+
+    public Vehicle(String description, String dateAcquired, double originalCost,
+                   String makeModel, int year, int odometer) {
         super(description, dateAcquired, originalCost);
-        this.address = address;
-        this.condition = condition;
-        this.squareFoot = squareFoot;
-        this.lotSize = lotSize;
+        this.makeModel = makeModel;
+        this.year = year;
+        this.odometer = odometer;
     }
 
-    //    public House(String description, String dateAcquired, double originalCost){
-//        super(description, dateAcquired, originalCost);
-//    }
-
-
-    public String getAddress() {
-        return address;
+    public String getMakeModel() {
+        return makeModel;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public int getYear() {
+        return year;
     }
 
-    public int getCondition() {
-        return condition;
+    public int getOdometer() {
+        return odometer;
     }
 
-    public void setCondition(int condition) {
-        this.condition = condition;
+    public void setMakeModel(String makeModel) {
+        this.makeModel = makeModel;
     }
 
-    public int getSquareFoot() {
-        return squareFoot;
+    public void setYear(int year) {
+        this.year = year;
     }
 
-    public void setSquareFoot(int squareFoot) {
-        this.squareFoot = squareFoot;
-    }
-
-    public int getLotSize() {
-        return lotSize;
-    }
-
-    public void setLotSize(int lotSize) {
-        this.lotSize = lotSize;
+    public void setOdometer(int odometer) {
+        this.odometer = odometer;
     }
 
     @Override
-    public double getValue(){
-        double pricePerSquareFoot;
-        switch(condition){
-            case 1: //excellent
-                pricePerSquareFoot = 180;
-                break;
-            case 2: //good
-                pricePerSquareFoot = 130;
-                break;
-            case 3: //fair
-                pricePerSquareFoot = 90;
-                break;
-            case 4: //poor
-                pricePerSquareFoot = 80;
-                break;
-            default:
-                pricePerSquareFoot = 0;
+    public double getValue() {
+        int currentYear = Year.now().getValue();
+        int age = currentYear - year;
+        double value = getOriginalCost();
+
+        if (age <= 3) {
+            value -= value * (0.03 * age);
+        } else if (age <= 6) {
+            value -= value * (0.06 * age);
+        } else if (age <= 10) {
+            value -= value * (0.08 * age);
+        } else {
+            value = 1000;
         }
 
-        return (pricePerSquareFoot * this.squareFoot) + (this.lotSize * 0.25);
+        // Reduce by 25% if over 100,000 miles unless Honda or Toyota
+        if (odometer > 100000 &&
+                !(makeModel.toLowerCase().contains("honda") ||
+                        makeModel.toLowerCase().contains("toyota"))) {
+            value *= 0.75;
+        }
+
+        return value;
     }
 }
